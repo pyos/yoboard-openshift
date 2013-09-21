@@ -1,5 +1,18 @@
 #!/bin/bash
-# The logic to start up your application should be put in this
-# script. The application will work only if it binds to
-# $OPENSHIFT_DIY_IP:8080
-nohup $OPENSHIFT_REPO_DIR/diy/testrubyserver.rb $OPENSHIFT_DIY_IP $OPENSHIFT_REPO_DIR/diy > $OPENSHIFT_DIY_DIR/logs/server.log 2>&1 &
+cat $OPENSHIFT_DATA_DIR/conf/nginx.conf.template      | \
+  sed "s|\$OPENSHIFT_IP|$OPENSHIFT_DIY_IP|g"          | \
+  sed "s|\$OPENSHIFT_PORT|8080|g"                     | \
+  sed "s|\$OPENSHIFT_REPO_DIR|$OPENSHIFT_REPO_DIR|g"  | \
+  sed "s|\$OPENSHIFT_TMP_DIR|$OPENSHIFT_TMP_DIR|g" > $OPENSHIFT_DATA_DIR/conf/nginx.conf
+
+$OPENSHIFT_DATA_DIR/bin/python3.3 -m yoboard.database >$OPENSHIFT_DIY_LOG_DIR/db.log 2>&1 &
+$OPENSHIFT_DATA_DIR/bin/gunicorn \
+  --daemon \
+  --pid $OPENSHIFT_TMP_DIR/gunicorn.pid \
+  --workers 4 \
+  --bind unix:$OPENSHIFT_TMP_DIR/gunicorn.socket \
+  --error-logfile  $OPENSHIFT_DIY_LOG_DIR/gunicorn.error.log  \
+  --access-logfile $OPENSHIFT_DIY_LOG_DIR/gunicorn.access.log \
+  yoboard.core:app
+
+nohup $OPENSHIFT_DATA_DIR/sbin/nginx > $OPENSHIFT_DIY_LOG_DIR/nginx.log 2>&1 &

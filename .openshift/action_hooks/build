@@ -1,0 +1,7 @@
+#!/bin/bash
+export PATH="$PATH:$OPENSHIFT_DATA_DIR/bin:$OPENSHIFT_DATA_DIR/sbin"
+export PYTHONPATH="$OPENSHIFT_REPO_DIR"
+
+pip3 install -r    "$OPENSHIFT_REPO_DIR/yoboard/requirements.txt" gunicorn >"$OPENSHIFT_DIY_LOG_DIR/pip.log" 2>&1
+cp           -f    "$OPENSHIFT_REPO_DIR/configs/yoboard.dg" "$OPENSHIFT_REPO_DIR/yoboard/config.dg"
+python3      -m dg "$OPENSHIFT_REPO_DIR/configs/nginx.dg" > "$OPENSHIFT_DATA_DIR/conf/nginx.conf" 2>/dev/null

@@ -1,0 +1,3 @@
+[submodule "yoboard"]
+	path = yoboard
+	url = https://github.com/pyos/yoboard.git

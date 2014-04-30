@@ -1,11 +1,14 @@
 #!/bin/bash
-killps() {
-  kill `ps -ef | grep $1 | grep -v grep | awk '{ print $2 }'`
+function killps {
+  # Kill a process given a part of its name.
+  #
+  # Pretty much equivalent to pkill?
+  #
+  kill $1 `ps -ef | grep $2 | grep -v grep | awk '{ print $2 }'`
 }
 
-if [ -f "$OPENSHIFT_TMP_DIR/gunicorn.pid" ]
-then
-  killps 'yoboard.database'                   >/dev/null 2>&1
-  killps 'nginx'                              >/dev/null 2>&1
-  kill $(cat $OPENSHIFT_TMP_DIR/gunicorn.pid) >/dev/null 2>&1
-fi
+killps -TERM 'yoboard.database'
+killps -TERM 'nginx'
+killps -INT  'gunicorn'
+# There can be no errors.
+true

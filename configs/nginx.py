@@ -1,6 +1,10 @@
-import '/jinja2/Template'
+from os import environ
+from jinja2 import Template
 
-print $ (Template '''
+from yoboard import config
+
+
+print(Template('''
 worker_processes 4;
 
 events {
@@ -45,5 +49,4 @@ http {
     }
   }
 }
-''').render config:  (import '/yoboard/config')
-            environ: (import '/os/environ')
+''').render(config=config, environ=environ))

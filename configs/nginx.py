@@ -30,16 +30,12 @@ http {
       alias {{ environ.OPENSHIFT_REPO_DIR }}/favicon.ico;
     }
 
-    location /static/banner {
-      alias {{ config.BANNER_DIR }};
-    }
-
     location /static/upload {
       alias {{ config.UPLOAD_DIR }};
     }
 
     location /static {
-      alias {{ config.STATIC_DIR }};
+      alias {{ environ.OPENSHIFT_REPO_DIR }}/yoboard/viewserver/static;
     }
 
     location / {

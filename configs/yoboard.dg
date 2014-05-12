@@ -15,18 +15,10 @@ SITE_NAME = 'Yobach'
 # Edit /static/img/main-image.png to replace the image.
 SITE_TITLE = 'YOBA SLUSHAET VAS'
 
-# Where to store the database. Do not serve this.
 STORAGE_DIR = path.join (environ !! 'OPENSHIFT_DATA_DIR') 'yoboard'
-
-# Location of `/static/` in the filesystem.
-STATIC_DIR = path.join (path.dirname __file__) 'static'
 
 # Where to save the uploaded files. Serve them on `/static/upload/`.
 UPLOAD_DIR = path.join STORAGE_DIR 'upload'
-
-# Where the banners are. Should be served on /static/banner/.
-# Leave that directory empty if you don't want to show anything.
-BANNER_DIR = path.join (environ !! 'OPENSHIFT_REPO_DIR') 'banners'
 
 # A file to use for persistent storage.
 # The database will automatically dump stuff into this file
@@ -38,8 +30,8 @@ DATABASE = path.join STORAGE_DIR 'data-bundle'
 AUTOSYNC_INTERVAL = 15 * 60
 
 # Where to listen for database connections.
-CLIENT_ADDRESS = socket.AF_UNIX, path.join STORAGE_DIR 'data-socket'
-SERVER_ADDRESS = socket.AF_UNIX, path.join STORAGE_DIR 'data-socket'
+CLIENT_ADDRESS = socket.AF_UNIX, '/tmp/yoboard-socket'
+SERVER_ADDRESS = socket.AF_UNIX, '/tmp/yoboard-socket'
 
 # Maximum no. of threads on a single page and on a whole board.
 # Once a thread is pushed off a board, it is automatically removed.
@@ -71,8 +63,8 @@ IMAGES_ALWAYS_BUMP = True
 # Various limits on message sizes.
 # Note that there's no limit on the size of uploaded files;
 # use nginx as a proxy for that (it can limit the size of a request.)
-MAX_TITLE_LENGTH = 100
-MAX_TEXT_LENGTH  = 3000
-MAX_TEXT_LINES   = 300
+MAX_TITLE_LENGTH = 50
+MAX_TEXT_LENGTH  = 2000
+MAX_TEXT_LINES   = 20
 MAX_UPLOADS      = 5
 NOT_EMPTY        = True  # a post must have some text and/or files

@@ -16,7 +16,7 @@ SITE_NAME = 'Yobach'
 SITE_TITLE = 'YOBA SLUSHAET VAS'
 
 # Where to store the database. Do not serve this.
-STORAGE_DIR = path.dirname __file__
+STORAGE_DIR = path.join (environ !! 'OPENSHIFT_DATA_DIR') 'yoboard'
 
 # Location of `/static/` in the filesystem.
 STATIC_DIR = path.join (path.dirname __file__) 'static'

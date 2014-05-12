@@ -39,7 +39,7 @@ http {
     }
 
     location /static {
-      alias {{ environ.OPENSHIFT_REPO_DIR }}/yoboard/viewserver/static;
+      alias {{ config.STATIC_DIR }};
     }
 
     location / {

@@ -22,8 +22,11 @@ UPLOAD_DIR = path.join STORAGE_DIR 'upload'
 
 # A file to use for persistent storage.
 # The database will automatically dump stuff into this file
-# at regular intervals, as well as on shutdown.
-DATABASE = path.join STORAGE_DIR 'data-bundle'
+# at regular intervals, as well as on shutdown. An AOF (append-only file)
+# contains the list of write commands executed since the last dump;
+# set to `None` to disable.
+DATABASE     = path.join STORAGE_DIR 'data-bundle'
+DATABASE_AOF = path.join STORAGE_DIR 'data-aof'
 
 # This is the interval after which to dump data, as noted above. (In seconds.)
 # Also, making a backup of the database is probably a good idea.

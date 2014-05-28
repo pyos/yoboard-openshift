@@ -22,6 +22,11 @@ http {
   access_log {{ environ.OPENSHIFT_DIY_LOG_DIR }}/nginx.access.log;
   error_log  {{ environ.OPENSHIFT_DIY_LOG_DIR }}/nginx.errors.log;
 
+  upstream yoboard {
+    server unix:/tmp/gunicorn.socket;
+    keepalive 32;
+  }
+
   server {
     listen      {{ environ.OPENSHIFT_DIY_IP }}:8080;
     server_name localhost;
@@ -39,9 +44,10 @@ http {
     }
 
     location / {
-      proxy_pass http://unix:/tmp/gunicorn.socket;
+      proxy_pass http://yoboard;
       proxy_set_header Host            $host;
       proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_http_version 1.1;
     }
   }
 }

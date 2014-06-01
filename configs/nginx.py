@@ -45,8 +45,6 @@ http {
 
     location / {
       proxy_pass http://yoboard;
-      proxy_set_header Host            $host;
-      proxy_set_header X-Forwarded-For $remote_addr;
       proxy_http_version 1.1;
     }
   }
